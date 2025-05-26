@@ -1,13 +1,562 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
-</html>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Stark durch Sanftheit</title>
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background-color: #FFF8F0;
+      font-family: 'Poppins', sans-serif;
+      color: #333;
+      overflow: hidden;
+    }
+    body {
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    * { box-sizing: border-box; }
+
+    .split-layout {
+      display: flex;
+      width: 100vw;
+      min-height: 100vh;
+      overflow: hidden;
+      background: #FFF8F0;
+    }
+    .main-content {
+      width: 60%;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      height: 100vh;
+      padding-bottom: 2rem;
+      background: #FFF8F0;
+    }
+    .app-container {
+      max-width: 800px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    .app-container h1 {
+      text-align: center;
+      margin-top: 2rem;
+      margin-bottom: 1.5rem;
+      font-size: 2.8rem;
+      color: #333;
+    }
+    .side-image {
+      width: 40%;
+      background-color: #FFF2E6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .side-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .start-screen {
+      min-height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      background-color: #FFF8F0;
+      text-align: center;
+    }
+    .start-screen h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .start-screen p {
+      font-size: 1.2rem;
+      color: #666;
+      margin-bottom: 2rem;
+    }
+    .start-screen button {
+      background-color: #F0D9E9;
+      color: #333;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 0.75rem 1.5rem;
+      font-size: 1.1rem;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+    .start-screen button:hover {
+      transform: scale(1.05);
+      background-color: #E4BEE0;
+    }
+    .nav-buttons {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 100%;
+      padding: 1rem 1.5rem;
+      background-color: #f8f8f8;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      box-sizing: border-box;
+    }
+    .nav-buttons button {
+      background-color: #F0D9E9;
+      color: #333;
+      border: none;
+      padding: 0.8rem 1.2rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+      flex-grow: 1;
+      margin: 0 0.5rem;
+      max-width: 150px;
+    }
+    .nav-buttons button:hover { background-color: #E4BEE0; }
+    .tool-section {
+      background-color: #FFFFFF;
+      padding: 1rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      width: 100%;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeIn 0.6s;
+    }
+    .tool-section h2 { margin-top: 1rem; text-align: center; }
+    .tool-description {
+      color: #555;
+      margin-bottom: 1.2rem;
+      text-align: center;
+    }
+    .card {
+      background-color: #F6F1EB;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      margin-top: 1rem;
+      text-align: center;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .quiz-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      width: 100%;
+    }
+    .quiz-button {
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.2s;
+      flex: 1;
+      max-width: 180px;
+      background-color: #F0D9E9;
+      color: #333;
+    }
+    .quiz-button:hover {
+      background-color: #E4BEE0;
+      transform: translateY(-2px);
+    }
+    .feedback-correct {
+      color: green;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    .feedback-wrong {
+      color: red;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    .tool-card {
+      background-color: #F6F1EB;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      cursor: pointer;
+      transition: all 0.3s;
+      width: 100%;
+      box-sizing: border-box;
+      position: relative;
+    }
+    .tool-card:hover {
+      transform: scale(1.01);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .tool-card p {
+      animation: expand 0.3s;
+      margin: 0.8rem 0 0;
+    }
+    @keyframes expand {
+      from { opacity: 0; transform: scaleY(0.95); }
+      to { opacity: 1; transform: scaleY(1); }
+    }
+    .note-input {
+      padding: 0.5rem;
+      width: 60%;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .note-button {
+      margin-left: 0.5rem;
+      padding: 0.5rem 1rem;
+      background-color: #F0D9E9;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .note-button:hover { background-color: #E4BEE0; }
+    .note-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+      justify-content: center;
+      width: 100%;
+    }
+    .note {
+      background: #fff9c4;
+      padding: 1rem;
+      border-radius: 8px;
+      max-width: 200px;
+      word-break: break-word;
+      position: relative;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .note-delete {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: transparent;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+    .tool-section input[type="text"],
+    .tool-section textarea {
+      width: calc(100% - 1.6rem);
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .tool-section button {
+      padding: 0.75rem 1.5rem;
+      background-color: #F7C8A3;
+      color: #333;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .tool-section button:hover {
+      background-color: #EBAA82;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* Responsive Styles */
+    @media (max-width: 900px) {
+      .split-layout { flex-direction: column; }
+      .main-content, .side-image {
+        width: 100%;
+        height: auto;
+      }
+      .side-image { order: 2; }
+    }
+    @media (max-width: 600px) {
+      .app-container h1 { font-size: 1.6rem; }
+      .tool-section { padding: 0.4rem; }
+      .tool-section h2 { font-size: 1.1rem; }
+      .side-image { padding: 0.3rem; }
+      .main-content { padding-bottom: 0.5rem; }
+      .nav-buttons { flex-direction: column; gap: 0.6rem; }
+      .nav-buttons button { max-width: 100%; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="start-screen" id="startScreen">
+    <h1>Stark. Sanft. Bedürfnisorientiert.</h1>
+    <p>Ein Ort zum Nachdenken, Stärken und Staunen.</p>
+    <button onclick="showApp()">Los geht's</button>
+  </div>
+  <div class="split-layout" id="app" style="display:none;">
+    <div class="main-content">
+      <div class="app-container">
+        <h1>Stark durch Sanftheit</h1>
+        <div class="nav-buttons">
+          <button id="tab-quiz" onclick="showTool('quiz')">🧠 Quiz</button>
+          <button id="tab-toolbox" onclick="showTool('toolbox')">🧰 Toolbox</button>
+          <button id="tab-pinnwand" onclick="showTool('pinnwand')">📌 Pinnwand</button>
+          <button id="tab-reflexion" onclick="showTool('reflexion')">🪞 Reflexion</button>
+        </div>
+        <div id="tool-quiz" class="tool-section"></div>
+        <div id="tool-toolbox" class="tool-section" style="display:none"></div>
+        <div id="tool-pinnwand" class="tool-section" style="display:none"></div>
+        <div id="tool-reflexion" class="tool-section" style="display:none"></div>
+      </div>
+    </div>
+    <div class="side-image">
+      <img src="https://www.kindpng.com/picc/m/667-6676965_transparent-child-vector-png-mutter-kind-beziehung-clipart.png"
+      alt="Inspiration">
+    </div>
+  </div>
+  <script>
+    // Startscreen to App switch
+    function showApp() {
+      document.getElementById("startScreen").style.display = "none";
+      document.getElementById("app").style.display = "flex";
+      showTool("quiz");
+    }
+    // Tab logic
+    function showTool(tool) {
+      ["quiz","toolbox","pinnwand","reflexion"].forEach(id=>{
+        document.getElementById("tool-"+id).style.display = (id===tool) ? "flex" : "none";
+        document.getElementById("tab-"+id).style.backgroundColor = (id===tool) ? "#E4BEE0" : "#F0D9E9";
+      });
+      if(tool==="quiz") renderQuiz();
+      if(tool==="toolbox") renderToolbox();
+      if(tool==="pinnwand") renderPinnwand();
+      if(tool==="reflexion") renderReflexion();
+    }
+
+    // QUIZ ===========================
+    const quizQuestions = [
+      {text:"Kinder müssen auch mal alleine klarkommen – Mythos oder nicht?", correct:"Mythos", explanation:"Kinder brauchen in schwierigen Momenten Unterstützung – nicht Alleinlassen."},
+      {text:"Grenzen sind wichtig – auch in der bedürfnisorientierten Erziehung – Mythos oder nicht?", correct:"Kein Mythos", explanation:"Liebevoll gesetzte Grenzen geben Kindern Sicherheit."},
+      {text:"Kinder manipulieren Erwachsene absichtlich – Mythos oder nicht?", correct:"Mythos", explanation:"Kinder handeln aus einem Bedürfnis heraus, nicht aus Berechnung."},
+      {text:"Wenn ich mein Kind immer tröste, wird es verweichlicht – Mythos oder nicht?", correct:"Mythos", explanation:"Trost stärkt die emotionale Resilienz – nicht Schwäche."},
+      {text:"Wutanfälle sind ein Zeichen schlechter Erziehung – Mythos oder nicht?", correct:"Mythos", explanation:"Wut ist eine normale Emotion, Kinder brauchen Begleitung dabei."},
+      {text:"Eltern dürfen auch mal Nein sagen – Mythos oder nicht?", correct:"Kein Mythos", explanation:"Auch Eltern haben Bedürfnisse. Nein sagen gehört dazu."},
+      {text:"Kinder testen Grenzen nur, um zu provozieren – Mythos oder nicht?", correct:"Mythos", explanation:"Grenzen testen ist ein natürlicher Teil von Entwicklung."},
+      {text:"Strafen helfen Kindern, richtig zu handeln – Mythos oder nicht?", correct:"Mythos", explanation:"Strafen unterbrechen die Verbindung – Einsicht entsteht aus Beziehung."},
+      {text:"Bedürfnisorientierung heißt, dass alles erlaubt ist – Mythos oder nicht?", correct:"Mythos", explanation:"Bedürfnisorientierung heißt auch klare, liebevolle Führung."},
+      {text:"Konsequenz ist wichtiger als Strafe – Mythos oder nicht?", correct:"Kein Mythos", explanation:"Konsequentes, liebevolles Verhalten vermittelt Orientierung."},
+      {text:"Kinder brauchen Kontrolle, um sich sicher zu fühlen – Mythos oder nicht?", correct:"Mythos", explanation:"Verlässliche Beziehung und Orientierung geben Sicherheit, nicht Kontrolle."},
+      {text:"Wenn ein Kind weint, manipuliert es – Mythos oder nicht?", correct:"Mythos", explanation:"Weinen ist Kommunikation, keine Manipulation."}
+    ];
+    let quizIndex = 0;
+    let quizLocked = false;
+
+    function renderQuiz() {
+      const el = document.getElementById("tool-quiz");
+      el.innerHTML = `
+        <h2>🧠 Mythos oder Nicht?</h2>
+        <p class="tool-description">
+          👋 Komm mit auf eine kleine Gedankenreise: Was denken wir über Kinder – und was ist wirklich wahr?
+          Klicke auf den passenden Button und finde es heraus.
+        </p>
+        <div id="quiz-content"></div>
+      `;
+      showQuizCard();
+    }
+    function showQuizCard() {
+      const c = quizQuestions[quizIndex];
+      let html = '';
+      if(!c) {
+        html = `<p>Quiz beendet! Du hast alle Fragen durchgearbeitet.</p>
+          <button onclick="resetQuiz()">Erneut starten</button>`;
+      } else {
+        html = `
+          <div class="card">
+            <p>${c.text}</p>
+            <div class="quiz-buttons">
+              <button class="quiz-button" onclick="answerQuiz('Kein Mythos')" id="quiz-left">👈 Kein Mythos</button>
+              <button class="quiz-button" onclick="answerQuiz('Mythos')" id="quiz-right">Mythos 👉</button>
+            </div>
+          </div>
+          <div id="quiz-feedback"></div>
+        `;
+      }
+      document.getElementById("quiz-content").innerHTML = html;
+    }
+    function answerQuiz(ans) {
+      if(quizLocked) return;
+      quizLocked = true;
+      const c = quizQuestions[quizIndex];
+      const correct = (ans === c.correct);
+      document.getElementById("quiz-feedback").innerHTML =
+        `<p class="${correct?'feedback-correct':'feedback-wrong'}">
+        ${correct ? '✅ Richtig!' : '❌ Falsch'} – ${c.explanation}</p>`;
+      setTimeout(()=>{
+        quizLocked = false;
+        quizIndex++;
+        showQuizCard();
+      }, 2000);
+    }
+    function resetQuiz() {
+      quizIndex = 0;
+      renderQuiz();
+    }
+
+    // TOOLBOX =======================
+    const toolboxData = [
+      { title: "Aktives Zuhören", description: "Wiederhole mit eigenen Worten, was dein Kind sagt." },
+      { title: "Co-Regulation", description: "Bleib ruhig und präsent bei starken Gefühlen." },
+      { title: "Ich-Botschaften", description: "Sag z. B.: 'Ich brauche kurz Ruhe.' statt Vorwürfen." },
+      { title: "Rituale im Alltag", description: "Kleine Wiederholungen wie Einschlafspruch geben Halt." },
+      { title: "Spiegeln statt schimpfen", description: "Du wolltest das alleine machen und warst frustriert – hab ich das richtig verstanden?" },
+      { title: "Warten statt reagieren", description: "Ein tiefer Atemzug, bevor du sprichst – du gewinnst Abstand." },
+      { title: "Realistische Erwartungen", description: "Ein Dreijähriger kann keine rationale Diskussion führen – das ist okay." },
+      { title: "Verbindung vor Lösung", description: "Ich bin bei dir – das hilft oft mehr als sofort Lösungen anzubieten." },
+      { title: "Weniger ist mehr", description: "Ein Blick, ein Nicken, ein Arm reichen manchmal völlig." },
+      { title: "Symbolspiel nutzen", description: "Mit Kuscheltieren Konflikte nachspielen hilft beim Verarbeiten." },
+      { title: "Körpersprache bewusst einsetzen", description: "Geh in die Hocke, sprich ruhig – das zeigt: Du bist da." },
+      { title: "Ankündigungen geben Sicherheit", description: "Statt zu überrumpeln: 'In 5 Minuten gehen wir.' gibt Orientierung." },
+      { title: "Gefühle benennen hilft beim Verstehen", description: "'Du bist traurig, weil ...' – Worte geben Halt." }
+    ];
+    let toolboxOpen = null;
+    function renderToolbox() {
+      const el = document.getElementById("tool-toolbox");
+      let html = `<h2>🧰 Toolbox</h2>
+        <p class="tool-description">
+          🎒 Hier findest du konkrete Impulse und Methoden für deinen Alltag – kleine Dinge mit großer Wirkung.<br>
+          Klappe eine Karte auf und lass dich inspirieren.
+        </p>`;
+      toolboxData.forEach((tool,i) => {
+        html += `<div class="tool-card" onclick="toggleToolbox(${i})">
+          <strong>${tool.title}</strong>
+          ${toolboxOpen===i ? `<p>${tool.description}</p>` : ''}
+        </div>`;
+      });
+      el.innerHTML = html;
+    }
+    function toggleToolbox(i) {
+      toolboxOpen = toolboxOpen===i ? null : i;
+      renderToolbox();
+    }
+
+    // PINNWAND =====================
+    let pinnwandNotes = [];
+    function renderPinnwand() {
+      const el = document.getElementById("tool-pinnwand");
+      let html = `
+        <h2>📌 Pinnwand</h2>
+        <p class="tool-description">
+          💬 Manchmal hilft es, Gedanken einfach festzuhalten.<br>
+          Schreib auf, was dir gerade durch den Kopf geht – ohne Bewertung, nur für dich.
+        </p>
+        <input id="note-input" class="note-input" placeholder="Gedanke eingeben...">
+        <button class="note-button" onclick="addNote()">Hinzufügen</button>
+        <div class="note-container" id="notes-list"></div>
+      `;
+      el.innerHTML = html;
+      showNotes();
+    }
+    function addNote() {
+      const val = document.getElementById("note-input").value.trim();
+      if(val) {
+        pinnwandNotes.push(val);
+        document.getElementById("note-input").value = "";
+        showNotes();
+      }
+    }
+    function deleteNote(i) {
+      pinnwandNotes.splice(i,1);
+      showNotes();
+    }
+    function showNotes() {
+      const c = document.getElementById("notes-list");
+      c.innerHTML = pinnwandNotes.map((note,i) =>
+        `<div class="note"><span>${note}</span>
+         <button class="note-delete" onclick="deleteNote(${i})">&times;</button></div>`).join("");
+    }
+
+    // REFLEXION ======================
+    let reflexionData = {
+      gratefulFor: "",
+      proudOf: "",
+      momentOfConnection: "",
+      todayMood: "😐",
+      selfCare: "",
+      repair: "",
+      newInsight: "",
+      tomorrowIntent: "",
+      miniJoy: ""
+    };
+    function renderReflexion() {
+      const el = document.getElementById("tool-reflexion");
+      let html = `<h2>🪞 Dankbarkeit & Reflexion</h2>
+        <p class="tool-description">
+          🌙 Am Ende des Tages lohnt sich ein Moment der Achtsamkeit:<br>
+          Was war heute schön? Wo hast du dir selbst etwas Gutes getan?<br>
+          Nutze diesen Raum für dich – ganz ohne Druck.
+        </p>
+        ${renderReflexionFields()}
+        <div style="margin-bottom:1rem;">
+          <p><strong>🧠 Wie fühlst du dich gerade?</strong></p>
+          <div style="font-size:1.5rem;">${["😞","😐","🙂","😊","🤩"].map(emoji=>
+            `<button type="button" onclick="setReflexionMood('${emoji}')" 
+              style="background:transparent;border:${reflexionData.todayMood===emoji?'2px solid #333':'1px solid #ccc'};
+              border-radius:8px;padding:0.3rem 0.6rem;margin-right:0.5rem;cursor:pointer">
+            ${emoji}</button>`).join("")}
+          </div>
+        </div>`;
+      el.innerHTML = html;
+      // Attach input handlers:
+      ["gratefulFor","proudOf","momentOfConnection","selfCare","repair","newInsight","tomorrowIntent","miniJoy"].forEach(key=>{
+        document.getElementById('reflexion-'+key).value = reflexionData[key];
+        document.getElementById('reflexion-'+key).oninput = e=>{
+          reflexionData[key] = e.target.value;
+        };
+      });
+    }
+    function renderReflexionFields() {
+      const fields = [
+        { key: "gratefulFor", label: "💛 Wofür bist du heute dankbar?" },
+        { key: "proudOf", label: "🌱 Worauf bist du heute stolz?" },
+        { key: "momentOfConnection", label: "👶 Ein Moment echter Verbindung?" },
+        { key: "selfCare", label: "🌿 Wie hast du für dich gesorgt?" },
+        { key: "repair", label: "🤝 Hast du einen Konflikt repariert?" },
+        { key: "newInsight", label: "🧠 Was hast du über dich selbst gelernt?" },
+        { key: "tomorrowIntent", label: "📚 Was möchtest du dir für morgen vornehmen?" },
+        { key: "miniJoy", label: "🌈 Was hat dich zum Lächeln gebracht?" }
+      ];
+      return fields.map(item=>`
+        <div style="margin-bottom:1rem;">
+          <p><strong>${item.label}</strong></p>
+          <textarea id="reflexion-${item.key}" rows="2" placeholder="Deine Antwort..."></textarea>
+        </div>
+      `).join("");
+    }
+    function setReflexionMood(mood) {
+      reflexionData.todayMood = mood;
+      renderReflexion();
+    }
+    // Erstes Quiz anzeigen
+    renderQuiz();
+  </script>
+</body>
+</html> 
